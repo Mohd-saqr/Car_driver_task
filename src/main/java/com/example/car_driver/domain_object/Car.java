@@ -1,11 +1,7 @@
 package com.example.car_driver.domain_object;
-
-
 import com.example.car_driver.domain_enum.EngineType;
-import com.sun.istack.NotNull;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.format.annotation.DateTimeFormat;
-
-
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 
@@ -20,10 +16,10 @@ public class Car {
     @Column(nullable = false)
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private ZonedDateTime date_created=ZonedDateTime.now();
+    private ZonedDateTime date_created = ZonedDateTime.now();
 
     @Column(unique = true)
-    private String license_plate;
+    private String licensePlate;
 
     @Column(nullable = false)
     private int seat_count;
@@ -34,17 +30,18 @@ public class Car {
     @Column(nullable = false)
     private String manufacturer;
     @Column(nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private EngineType engineType;
 
+    @JsonManagedReference
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "car")
     private Driver driver;
 
     public Car() {
     }
 
-    public Car(String license_plate, int seat_count, Boolean convertible, String manufacturer, EngineType engineType) {
-        this.license_plate = license_plate;
+    public Car(String licensePlate, int seat_count, Boolean convertible, String manufacturer, EngineType engineType) {
+        this.licensePlate = licensePlate;
         this.seat_count = seat_count;
         this.convertible = convertible;
         this.manufacturer = manufacturer;
@@ -67,12 +64,12 @@ public class Car {
         this.date_created = date_created;
     }
 
-    public String getLicense_plate() {
-        return license_plate;
+    public String getLicensePlate() {
+        return licensePlate;
     }
 
-    public void setLicense_plate(String license_plate) {
-        this.license_plate = license_plate;
+    public void setLicensePlate(String license_plate) {
+        this.licensePlate = license_plate;
     }
 
     public int getSeat_count() {

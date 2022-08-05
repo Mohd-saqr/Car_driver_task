@@ -1,14 +1,18 @@
 package com.example.car_driver.domain_object;
 
 import com.example.car_driver.domain_enum.Status;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "driver_tbl")
-public class Driver {
+public class Driver  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +24,8 @@ public class Driver {
     @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime date_created = ZonedDateTime.now();
+
+    @JsonBackReference
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id")
     private Car car;
@@ -31,7 +37,6 @@ public class Driver {
         this.username = username;
         this.password = password;
         this.status=Status.OFFLINE;
-
     }
 
     public Driver() {
