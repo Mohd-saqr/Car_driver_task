@@ -57,7 +57,7 @@ public class CarServiceImp implements CarService {
     public void deleteCar(Long id) throws EntityNotFoundException {
         Optional<Car> car = carRepo.findById(id);
         if (car.isEmpty())
-            throw new EntityNotFoundException("");
+            throw new EntityNotFoundException("car not found with id ="+ id) ;
 
         carRepo.delete(car.get());
 
@@ -70,13 +70,13 @@ public class CarServiceImp implements CarService {
         Optional<Car> car = carRepo.findByLicensePlate(license_plate);
         Optional<Driver> driver = driverRepo.findById(id);
         if (car.isEmpty())
-            throw new EntityNotFoundException("");
+            throw new EntityNotFoundException("car not found with license_plate ="+ license_plate) ;
         if (driver.isEmpty())
-            throw new EntityNotFoundException("");
+            throw new EntityNotFoundException("driver not found with id ="+ driver.get().getId()) ;
         if (car.get().getDriver() != null)
-            throw new CarAlreadyInUseException("");
+            throw new CarAlreadyInUseException("car is already in use");
         if (driver.get().getStatus() != Status.ONLINE)
-            throw new InstructionsDomainException("");
+            throw new InstructionsDomainException("driver is offline");
 
         car.get().setDriver(driver.get());
         carRepo.save(car.get());
@@ -96,16 +96,13 @@ public class CarServiceImp implements CarService {
         Optional<Car> car = carRepo.findByLicensePlate(license_plate);
         Optional<Driver> driver = driverRepo.findById(DriverId);
         if (checkObject(car))
-            throw new EntityNotFoundException("");
+            throw new EntityNotFoundException("car not found with license_plate ="+ license_plate) ;
 
         if (checkObject(driver))
-            throw new EntityNotFoundException("");
-
-        if (car.get().getDriver() == null)
-            throw new InstructionsDomainException("");
+            throw new EntityNotFoundException("driver not found with id ="+ driver.get().getId()) ;
 
         if (!car.get().getDriver().getId().equals(driver.get().getId()))
-            throw new InstructionsDomainException("");
+            throw new InstructionsDomainException("the car are used from another driver");
 
         car.get().setDriver(null);
         driver.get().setCar(null);

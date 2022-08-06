@@ -2,16 +2,24 @@ package com.example.car_driver.domain_object;
 
 import com.example.car_driver.domain_enum.Status;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.io.Serializable;
+
 import java.time.ZonedDateTime;
 
-@Entity
+
+
+
+
 @Table(name = "driver_tbl")
+@Entity
+@Builder
+@AllArgsConstructor
 public class Driver  {
 
     @Id
@@ -33,10 +41,17 @@ public class Driver  {
     @Enumerated(EnumType.ORDINAL)
     private Status status;
 
+
     public Driver(String username, String password) {
         this.username = username;
         this.password = password;
         this.status=Status.OFFLINE;
+    }
+
+    public Driver(String username, String password, Status status) {
+        this.username = username;
+        this.password = password;
+        this.status = status;
     }
 
     public Driver() {

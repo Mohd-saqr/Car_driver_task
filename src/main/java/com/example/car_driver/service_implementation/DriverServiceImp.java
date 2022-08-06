@@ -34,7 +34,7 @@ public class DriverServiceImp implements DriverService {
     public Driver getDriver(String username) throws EntityNotFoundException {
         Optional<Driver> driver = driverRepo.findByUsername(username);
         if (checkObject(driver))
-            throw new EntityNotFoundException("");
+            throw new EntityNotFoundException("Entity not found");
 
         return driver.get();
     }
@@ -43,7 +43,7 @@ public class DriverServiceImp implements DriverService {
     public Driver getDriver(Long id) throws EntityNotFoundException {
         Optional<Driver>driver = driverRepo.findById(id);
         if (driver.isEmpty())
-            throw new EntityNotFoundException("");
+            throw new EntityNotFoundException("Entity not found");
         return driver.get();
     }
 
@@ -61,7 +61,7 @@ public class DriverServiceImp implements DriverService {
     public void setStatus(Status status, Long driverId) throws EntityNotFoundException {
         Optional<Driver> driver = driverRepo.findById(driverId);
         if (checkObject(driver))
-            throw new EntityNotFoundException("");
+            throw new EntityNotFoundException("Entity not found");
 
         driver.get().setStatus(status);
 
@@ -78,7 +78,7 @@ public class DriverServiceImp implements DriverService {
     public void deleteDriver(Long id) throws EntityNotFoundException {
         Optional<Driver> driver = driverRepo.findById(id);
         if (checkObject(driver))
-            throw new EntityNotFoundException("");
+            throw new EntityNotFoundException("Entity not found");
         driverRepo.delete(driver.get());
     }
 
@@ -88,11 +88,11 @@ public class DriverServiceImp implements DriverService {
         Optional<Driver> driver = driverRepo.findById(id);
         Optional<Car> car = carRepo.findByLicensePlate(licensePlate);
         if (checkObject(car))
-            throw new InstructionsDomainException("");
+            throw new EntityNotFoundException("Entity not found");
         if (car.get().getDriver() != null)
-            throw new CarAlreadyInUseException("");
+            throw new CarAlreadyInUseException("CAR ALREADY IN USE");
         if (checkObject(driver))
-            throw new EntityNotFoundException("");
+            throw new EntityNotFoundException("Entity not found");
         if (driver.get().getStatus()!=Status.ONLINE)
             throw new InstructionsDomainException("driver is offline");
 
