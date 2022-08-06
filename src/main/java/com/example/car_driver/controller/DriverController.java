@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController()
-@RequestMapping("/v1/drivers")
+@RequestMapping("/api/drivers")
 public class DriverController {
     DriverServiceImp driverServiceImp;
     CarServiceImp carServiceImp;
@@ -61,8 +61,10 @@ public class DriverController {
     }
 
     @PutMapping("/select_car/{driverId}/{licensePlate}")
-    public void selectCar(@PathVariable Long driverId ,@PathVariable String licensePlate) throws CarAlreadyInUseException, EntityNotFoundException, InstructionsDomainException {
+    public String selectCar(@PathVariable Long driverId ,@PathVariable String licensePlate) throws CarAlreadyInUseException, EntityNotFoundException, InstructionsDomainException {
         driverServiceImp.selectCar(driverId,licensePlate);
+        return "car with licensePlate =" +licensePlate +"is selected by driver with " +
+                "id= " +driverId;
     }
 
 
